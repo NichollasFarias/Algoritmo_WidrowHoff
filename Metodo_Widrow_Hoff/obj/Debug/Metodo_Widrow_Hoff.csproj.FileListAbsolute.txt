@@ -1,0 +1,10 @@
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\bin\Debug\Metodo_Widrow_Hoff.exe.config
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\bin\Debug\Metodo_Widrow_Hoff.exe
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\bin\Debug\Metodo_Widrow_Hoff.pdb
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\obj\Debug\Metodo_Widrow_Hoff.csproj.AssemblyReference.cache
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\obj\Debug\Metodo_Widrow_Hoff.Form1.resources
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\obj\Debug\Metodo_Widrow_Hoff.Properties.Resources.resources
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\obj\Debug\Metodo_Widrow_Hoff.csproj.GenerateResource.cache
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\obj\Debug\Metodo_Widrow_Hoff.csproj.CoreCompileInputs.cache
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\obj\Debug\Metodo_Widrow_Hoff.exe
+C:\Users\nicho\OneDrive\Área de Trabalho\Trabalhos\HUGO\Metodo_Widrow_Hoff\Metodo_Widrow_Hoff\obj\Debug\Metodo_Widrow_Hoff.pdb
