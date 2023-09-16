@@ -28,15 +28,13 @@ namespace Metodo_Widrow_Hoff
         private void button1_Click(object sender, EventArgs e)
         {
             LT_Log.Items.Clear();
+            Lb_NTreinamento.Text = "";
             ContTrain = 0;
             //Amazernar Valores Globais
             w1 = double.Parse(TB_W1.Text);
             w2 = double.Parse(TB_W2.Text);
             w0 = double.Parse(TB_W0.Text);
             x0 = double.Parse(TB_X0.Text);
-
-            Maxy = double.Parse(TB_Y1.Text);
-            Miny = double.Parse(TB_Y0.Text);
 
             alfa = double.Parse(TB_Alfa.Text);
             MaxTrain = double.Parse(TB_MT.Text);
@@ -47,12 +45,13 @@ namespace Metodo_Widrow_Hoff
             GrafC.Legends.Clear();
 
             GrafC.Titles.Add("Caso");
+            GrafC.Series.Add("Linha");
             GrafC.Series.Add("X1");
             GrafC.Series.Add("X2");
             GrafC.Legends.Add("X1");
             GrafC.Legends.Add("X2");
 
-
+            GrafC.Series["Linha"].ChartType = SeriesChartType.Line;
             GrafC.Series["X1"].ChartType = SeriesChartType.Point;
             GrafC.Series["X2"].ChartType = SeriesChartType.Point;
 
@@ -89,12 +88,24 @@ namespace Metodo_Widrow_Hoff
 
                 for (int j = 0; j < Ncasos; j++)
                 {
-                    LT_Log.ForeColor = Color.Black;
+                    
                     double xx1 = double.Parse(Tab_Entradas.Rows[j].Cells[0].Value.ToString());
                     double xx2 = double.Parse(Tab_Entradas.Rows[j].Cells[1].Value.ToString());
                     double target = double.Parse(Tab_Entradas.Rows[j].Cells[2].Value.ToString());
+                    double modulo = Math.Sqrt(Math.Pow(xx1,2) + Math.Pow(xx2,2) + Math.Pow(x0,2));
+                    double X2W = -((w1 / w2) * xx1) - (w0 / w2);
 
-                    double s = Math.Round((w0 * x0) + (w1 * xx1) + (w2 * xx2));
+                    double s = (w0 * x0) + (w1 * xx1) + (w2 * xx2);
+
+                    if (s > 0)
+                    {
+                        y = 1;
+                    }
+
+                    if (s < 0)
+                    {
+                        y = -1;
+                    }
 
                     erro = target - s;
 
@@ -103,40 +114,31 @@ namespace Metodo_Widrow_Hoff
                     GrafP.Series["W1"].Points.AddXY(w1, erro);
 
                     GrafP.Series["W2"].Points.AddXY(w2, erro);
+                    GrafC.Series["Linha"].Points.AddXY(xx1, X2W);
 
-
-                    w0 = w0 + (alfa * erro * x0);
-                    w1 = w1 + (alfa * erro * xx1);
-                    w2 = w2 + (alfa * erro * xx2);
+                    w0 = w0 + (alfa * erro * (x0/ Math.Pow(modulo,2)));
+                    w1 = w1 + (alfa * erro * (xx1/ Math.Pow(modulo,2)));
+                    w2 = w2 + (alfa * erro * (xx2 / Math.Pow(modulo,2)));
 
                     LT_Log.Items.Add("Caso: " + j);
                     LT_Log.Items.Add("x1: " + xx1);
                     LT_Log.Items.Add("x1: " + xx2);
                     LT_Log.Items.Add("Target: " + target);
 
-                    if (s > Maxy)
-                    {
-                        y = 1;
-                    }
-
-                    if (s < Miny)
-                    {
-                        y = -1;
-                    }
 
 
 
                     if (target == y)
                     {
                         ContEvolu++;
-                        LT_Log.ForeColor = Color.Green;
+           
                         LT_Log.Items.Add(" y: " + y + " OK");
                         LT_Log.Items.Add("-----------------");
-                        LT_Log.ForeColor = Color.Black;
+                        
                     }
                     else
                     {
-                        LT_Log.ForeColor = Color.Red;
+                        
                         LT_Log.Items.Add(" y: " + y + " ERROR");
                         LT_Log.Items.Add("-----------------");
 
@@ -156,6 +158,7 @@ namespace Metodo_Widrow_Hoff
                 {
                     break;
                 }
+                else { Lb_NTreinamento.Text = "Limite Max."; }
 
                 ContTrain++;
             }
@@ -176,7 +179,11 @@ namespace Metodo_Widrow_Hoff
                 double xxx1 = double.Parse(Tab_Entradas.Rows[i].Cells[0].Value.ToString());
                 double xxx2 = double.Parse(Tab_Entradas.Rows[i].Cells[1].Value.ToString());
                 double target1 = double.Parse(Tab_Entradas.Rows[i].Cells[2].Value.ToString());
+                //double X2W = -((w1 / w2) * xxx1) - (w0/w2);
 
+
+
+                //GrafC.Series["Linha"].Points.AddXY(xxx1,X2W);
 
                 if (target1 == 1)
                 {
@@ -257,10 +264,22 @@ namespace Metodo_Widrow_Hoff
             Tab_Entradas.Rows.Add(22, 37, -1);
             Tab_Entradas.Rows.Add(30, 33, -1);
             Tab_Entradas.Rows.Add(27, 37, -1);
+
+            Tab_Entradas.Rows.Add(35, 34, -1);
+            Tab_Entradas.Rows.Add(38, 39, -1);
+            Tab_Entradas.Rows.Add(26, 35, -1);
+            Tab_Entradas.Rows.Add(33, 37, -1);
+
             Tab_Entradas.Rows.Add(4, 40, 1);
             Tab_Entradas.Rows.Add(6, 38, 1);
             Tab_Entradas.Rows.Add(10, 44, 1);
             Tab_Entradas.Rows.Add(3, 42, 1);
+
+            Tab_Entradas.Rows.Add(4, 46, 1);
+            Tab_Entradas.Rows.Add(15, 45, 1);
+            Tab_Entradas.Rows.Add(10, 38, 1);
+            Tab_Entradas.Rows.Add(7, 48, 1);
+
             Ncasos = Tab_Entradas.RowCount - 1;
         }
 
