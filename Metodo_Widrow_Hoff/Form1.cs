@@ -20,7 +20,7 @@ namespace Metodo_Widrow_Hoff
         }
 
         int Ncasos;
-        double w1, w2, w0, x0, alfa, MaxTrain, erro, y, Maxy, Miny;
+        double w1, w2, w0, x0, alfa, MaxTrain, erro, y;
         int ContTrain;
         int ContEvolu;
 
@@ -30,6 +30,7 @@ namespace Metodo_Widrow_Hoff
             LT_Log.Items.Clear();
             Lb_NTreinamento.Text = "";
             ContTrain = 0;
+
             //Amazernar Valores Globais
             w1 = double.Parse(TB_W1.Text);
             w2 = double.Parse(TB_W2.Text);
@@ -76,10 +77,11 @@ namespace Metodo_Widrow_Hoff
             #endregion
 
 
-            #region
+            #region Metodo Widrow Hoff
             for (int i = 0; i < MaxTrain; i++)
             {
-                LT_Log.ForeColor = Color.Black;
+               //Log
+
                 LT_Log.Items.Add("-------------------------------------");
                 LT_Log.Items.Add("Treinamento:" + ContTrain + " w1: " + w1 + " w2: " + w2 + " w0: " + w0);
                 LT_Log.Items.Add("-------------------------------------");
@@ -88,63 +90,71 @@ namespace Metodo_Widrow_Hoff
 
                 for (int j = 0; j < Ncasos; j++)
                 {
-                    
+
+                    //Pegando os valores da tabela
+
                     double xx1 = double.Parse(Tab_Entradas.Rows[j].Cells[0].Value.ToString());
                     double xx2 = double.Parse(Tab_Entradas.Rows[j].Cells[1].Value.ToString());
                     double target = double.Parse(Tab_Entradas.Rows[j].Cells[2].Value.ToString());
-                    double modulo = Math.Sqrt(Math.Pow(xx1,2) + Math.Pow(xx2,2) + Math.Pow(x0,2));
+
+                    double modulo = Math.Sqrt(Math.Pow(xx1, 2) + Math.Pow(xx2, 2) + Math.Pow(x0, 2));
+
+                    //Linha do Grafico dos Pesos
+
                     double X2W = -((w1 / w2) * xx1) - (w0 / w2);
 
+                    // Saida Intermediaria
+
                     double s = (w0 * x0) + (w1 * xx1) + (w2 * xx2);
+
+                    //Relé
 
                     if (s > 0)
                     {
                         y = 1;
                     }
-
-                    if (s < 0)
+                    else
                     {
                         y = -1;
                     }
 
                     erro = target - s;
 
-                    //GraficoPeso(w1,w2,erro);
+                    // Grafico de Pesos
 
                     GrafP.Series["W1"].Points.AddXY(w1, erro);
 
                     GrafP.Series["W2"].Points.AddXY(w2, erro);
                     GrafC.Series["Linha"].Points.AddXY(xx1, X2W);
 
-                    w0 = w0 + (alfa * erro * (x0/ Math.Pow(modulo,2)));
-                    w1 = w1 + (alfa * erro * (xx1/ Math.Pow(modulo,2)));
-                    w2 = w2 + (alfa * erro * (xx2 / Math.Pow(modulo,2)));
+                    w0 = w0 + (alfa * erro * (x0 / Math.Pow(modulo, 2)));
+                    w1 = w1 + (alfa * erro * (xx1 / Math.Pow(modulo, 2)));
+                    w2 = w2 + (alfa * erro * (xx2 / Math.Pow(modulo, 2)));
 
                     LT_Log.Items.Add("Caso: " + j);
                     LT_Log.Items.Add("x1: " + xx1);
                     LT_Log.Items.Add("x1: " + xx2);
                     LT_Log.Items.Add("Target: " + target);
 
-
-
+                    // Verificação do Target
 
                     if (target == y)
                     {
                         ContEvolu++;
-           
+
                         LT_Log.Items.Add(" y: " + y + " OK");
                         LT_Log.Items.Add("-----------------");
-                        
+
                     }
                     else
                     {
-                        
+
                         LT_Log.Items.Add(" y: " + y + " ERROR");
                         LT_Log.Items.Add("-----------------");
 
                     }
 
-
+                    // Verificação de Conclusão da Evolução
 
                     if (ContEvolu == Ncasos)
                     {
@@ -153,6 +163,8 @@ namespace Metodo_Widrow_Hoff
                     }
 
                 }
+
+                // Verificação de Conclusão da Evolução
 
                 if (ContEvolu == Ncasos)
                 {
@@ -163,13 +175,12 @@ namespace Metodo_Widrow_Hoff
                 ContTrain++;
             }
 
+            // Pesos Finais
+
             Lb_W1F.Text = w1.ToString();
             Lb_W2F.Text = w2.ToString();
             #endregion
 
-
-
-            // WidrowHoff();
         }
 
         public void GraficoCaso()
@@ -180,9 +191,6 @@ namespace Metodo_Widrow_Hoff
                 double xxx2 = double.Parse(Tab_Entradas.Rows[i].Cells[1].Value.ToString());
                 double target1 = double.Parse(Tab_Entradas.Rows[i].Cells[2].Value.ToString());
                 //double X2W = -((w1 / w2) * xxx1) - (w0/w2);
-
-
-
                 //GrafC.Series["Linha"].Points.AddXY(xxx1,X2W);
 
                 if (target1 == 1)
@@ -198,68 +206,11 @@ namespace Metodo_Widrow_Hoff
 
         }
 
-        /*
-                public void WidrowHoff()
-                {
-                    for (int i = 0; i < MaxTrain; i++)
-                    {
-                        LT_Log.Items.Add("-------------------------------------");
-                        LT_Log.Items.Add("Treinamento:" + ContTrain + " w1: " + w1 + " w2: " + w2 + " w0: " + w0);
-                        LT_Log.Items.Add("-------------------------------------");
-
-                        for (int j = 0; j < Ncasos; j++)
-                        {
-                            double xx1 = double.Parse(Tab_Entradas.Rows[j].Cells[0].Value.ToString());
-                            double xx2 = double.Parse(Tab_Entradas.Rows[j].Cells[1].Value.ToString());
-                            double target = double.Parse(Tab_Entradas.Rows[j].Cells[2].Value.ToString());
-
-                            double y = Math.Round((w0 * x0) + (w1 * xx1) + (w2 * xx2), 2);
-
-                            erro = target - y;
-
-                            //GraficoPeso(w1,w2,erro);
-
-                            GrafP.Series["W1"].Points.AddXY(w1, erro);
-
-                            GrafP.Series["W2"].Points.AddXY(w2, erro);
-
-
-                            w0 = w0 + alfa * erro * x0;
-                            w1 = w1 + alfa * erro * xx1;
-                            w2 = w2 + alfa * erro * xx2;
-
-
-
-                            LT_Log.Items.Add("Caso: " + j);
-                            LT_Log.Items.Add("x1: " + xx1);
-                            LT_Log.Items.Add("x1: " + xx2);
-                            LT_Log.Items.Add("Target: " + target);
-                            LT_Log.Items.Add(" y: " + y);
-                            LT_Log.Items.Add(" Erro: " + erro);
-                            LT_Log.Items.Add("-----------------");
-
-
-                            if (Math.Abs(erro) < 0.0001)
-                            {
-                                Lb_NTreinamento.Text = (ContTrain + 1).ToString();
-                                break;
-                            }
-
-                        }
-
-                        ContTrain++;
-                    }
-
-                    Lb_W1F.Text = w1.ToString();
-                    Lb_W2F.Text = w2.ToString();
-                    Lb_NTreinamento.Text = (ContTrain).ToString();
-
-                }
-        */
 
         public void Entradas()
         {
             // Entradas de X1 X2 Target (Na tabela entradas) Obs.: Utilizando valores base do exemplo "Cabelo Sapato"
+           
             Tab_Entradas.Rows.Add(25, 34, -1);
             Tab_Entradas.Rows.Add(22, 37, -1);
             Tab_Entradas.Rows.Add(30, 33, -1);
@@ -279,6 +230,7 @@ namespace Metodo_Widrow_Hoff
             Tab_Entradas.Rows.Add(15, 45, 1);
             Tab_Entradas.Rows.Add(10, 38, 1);
             Tab_Entradas.Rows.Add(7, 48, 1);
+
 
             Ncasos = Tab_Entradas.RowCount - 1;
         }
